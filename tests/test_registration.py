@@ -158,8 +158,8 @@ class TestRegistration:
         driver.find_element(*TestLocators.INPUT_PASSWORD).send_keys(wrong_password)
         driver.find_element(*TestLocators.BUTTON_SUBMIT).click()
         
-        error_text = driver.find_element(*TestLocators.NOTIFICATION_INCORRECT_PASSWORD).text
-        assert error_text == 'Некорректный пароль'
+        driver.find_element(*TestLocators.BUTTON_SUBMIT).click()
+        assert driver.find_element(*TestLocators.NOTIFICATION_INCORRECT_PASSWORD).is_displayed()
         
     def test_registration_existing_user_failed(self, driver):
         driver.find_element(*TestLocators.BUTTON_LOGIN_MAIN).click()

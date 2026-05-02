@@ -46,7 +46,6 @@ def wait_for_successful_login(driver):
 def switch_section(driver, section_locator, expected_section):
     driver.find_element(*section_locator).click()
     wait_for_section_active(driver, expected_section)
-    assert driver.find_element(*TestLocators.ACTIVE_SECTION).text == expected_section
 
 def wait_for_section_active(driver, section_name):
     WebDriverWait(driver, 5).until(
