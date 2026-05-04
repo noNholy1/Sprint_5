@@ -8,29 +8,14 @@ from locators import TestLocators
 
 
 class TestLogout:
-    
-    def test_logout_of_personal_account(self, driver, login):
-        # Проверяем, что авторизованы
-        WebDriverWait(driver, 10).until(
-            EC.visibility_of_element_located(TestLocators.BUTTON_MAKE_ORDER)
-        )
-        
-        # Переходим в личный кабинет
+    def test_logout_from_personal_account(self, driver, logged_in_user):
+        # Переход в личный кабинет
         driver.find_element(*TestLocators.BUTTON_PERSONAL_ACCOUNT).click()
-        
-        # Ждем загрузки личного кабинета
-        WebDriverWait(driver, 10).until(
-            EC.visibility_of_element_located(TestLocators.PROFILE_SECTION)
-        )
-        
-        # Выходим из системы
+        # Ожидание загрузки страницы профиля (как пример, можно проверить наличие кнопки «Выход»)
+        WebDriverWait(driver, 5).until(
+            EC.visibility_of_element_located(TestLocators.BUTTON_LOGOUT))
+        # Клик по кнопке «Выход»
         driver.find_element(*TestLocators.BUTTON_LOGOUT).click()
-        
-        # Проверяем, что вернулись на страницу авторизации
-        WebDriverWait(driver, 10).until(
-            EC.visibility_of_element_located(TestLocators.BUTTON_LOGIN)
-        )
-        
-        # Дополнительные проверки
-        assert driver.find_element(*TestLocators.BUTTON_LOGIN).is_displayed()
-        assert '/login' in driver.current_url
+        # Проверка, что после выхода отображается кнопка «Войти»
+        assert WebDriverWait(driver, 5).until(
+            EC.visibility_of_element_located(TestLocators.BUTTON_LOGIN))

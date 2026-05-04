@@ -6,6 +6,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import pytest
 from selenium import webdriver
 from urls import MAIN_PAGE
+from helpers import go_to_login_form, fill_login_credentials, submit_login, wait_for_successful_login
 
 @pytest.fixture(scope='function')
 def driver():
@@ -24,9 +25,7 @@ def driver():
     driver.quit()
 
 @pytest.fixture
-def login(driver):
-    from helpers import go_to_login_form, fill_login_credentials, submit_login, wait_for_successful_login
-    
+def logged_in_user(driver):
     go_to_login_form(driver)
     fill_login_credentials(driver)
     submit_login(driver)

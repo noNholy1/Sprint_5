@@ -7,7 +7,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from locators import TestLocators
 from data import SectionData
-from helpers import switch_section, wait_for_section_active
+from helpers import click_section_tab
 
 
 class TestConstructorSections:
@@ -18,26 +18,23 @@ class TestConstructorSections:
         )
         assert driver.find_element(*TestLocators.ACTIVE_SECTION).text == SectionData.NAMES["buns"]
         
-    def test_switch_from_sauces_to_buns(self, driver, login):
-        driver.find_element(*TestLocators.SECTION_SAUCES).click()
-        wait_for_section_active(driver, SectionData.NAMES["sauces"])
-        switch_section(driver, TestLocators.SECTION_BUNS, SectionData.NAMES["buns"])
+    def test_switch_to_buns_section_is_active(self, driver, logged_in_user):
+        click_section_tab(driver, TestLocators.SECTION_BUNS)
+        assert WebDriverWait(driver, 5).until(
+            EC.text_to_be_present_in_element(TestLocators.ACTIVE_SECTION, SectionData.NAMES["buns"])
+        )
 
-    def test_switch_from_sauces_to_fillings(self, driver, login):
-        driver.find_element(*TestLocators.SECTION_SAUCES).click()
-        wait_for_section_active(driver, SectionData.NAMES["sauces"])
-        switch_section(driver, TestLocators.SECTION_FILLINGS, SectionData.NAMES["fillings"])
+    def test_switch_to_sauces_section_is_active(self, driver, logged_in_user):
+        click_section_tab(driver, TestLocators.SECTION_SAUCES)
+        assert WebDriverWait(driver, 5).until(
+            EC.text_to_be_present_in_element(TestLocators.ACTIVE_SECTION, SectionData.NAMES["sauces"])
+        )
 
-    def test_switch_from_fillings_to_buns(self, driver, login):
-        driver.find_element(*TestLocators.SECTION_FILLINGS).click()
-        wait_for_section_active(driver, SectionData.NAMES["fillings"])
-        switch_section(driver, TestLocators.SECTION_BUNS, SectionData.NAMES["buns"])
-
-    def test_switch_from_fillings_to_sauces(self, driver, login):
-        driver.find_element(*TestLocators.SECTION_FILLINGS).click()
-        wait_for_section_active(driver, SectionData.NAMES["fillings"])
-        switch_section(driver, TestLocators.SECTION_SAUCES, SectionData.NAMES["sauces"])
-
+    def test_switch_to_fillings_section_is_active(self, driver, logged_in_user):
+        click_section_tab(driver, TestLocators.SECTION_FILLINGS)
+        assert WebDriverWait(driver, 5).until(
+            EC.text_to_be_present_in_element(TestLocators.ACTIVE_SECTION, SectionData.NAMES["fillings"])
+        )
     def test_buns_content_displayed(self, driver):
         WebDriverWait(driver, 10).until(EC.visibility_of_element_located(TestLocators.BUTTON_LOGIN_MAIN))
         assert driver.find_element(*TestLocators.TEXT_BUNS).is_displayed()

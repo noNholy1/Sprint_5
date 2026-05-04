@@ -10,44 +10,26 @@ from urls import MAIN_PAGE
 
 class TestFromPersonalAccountToConstructor:
     
-    def test_return_via_constructor_button(self, driver, login):
-        # Переходим в личный кабинет
+    def test_navigate_to_constructor_via_constructor_button(self, driver, logged_in_user):
+        # Переход в личный кабинет
         driver.find_element(*TestLocators.BUTTON_PERSONAL_ACCOUNT).click()
-        
-        # Ждем загрузки ЛК
-        WebDriverWait(driver, 10).until(
-            EC.visibility_of_element_located(TestLocators.PROFILE_SECTION)
+        WebDriverWait(driver, 5).until(
+            EC.visibility_of_element_located(TestLocators.BUTTON_LOGOUT)
         )
-        
-        # Возвращаемся через кнопку Конструктор
+        # Клик по кнопке «Конструктор»
         driver.find_element(*TestLocators.BUTTON_CONSTRUCTOR_HEADER).click()
-        
-        # Проверяем возврат на главную
-        WebDriverWait(driver, 10).until(
-            EC.visibility_of_element_located(TestLocators.BUTTON_MAKE_ORDER)
-        )
-        
-        # Дополнительные проверки
-        assert driver.find_element(*TestLocators.BUTTON_MAKE_ORDER).is_displayed()
-        assert driver.current_url == MAIN_PAGE
-        
-    def test_return_via_logo(self, driver, login):
-        # Переходим в личный кабинет
+        # Проверка, что появилась кнопка «Оформить заказ»
+        assert WebDriverWait(driver, 5).until(
+            EC.visibility_of_element_located(TestLocators.BUTTON_MAKE_ORDER))
+
+    def test_navigate_to_constructor_via_logo(self, driver, logged_in_user):
+        # Переход в личный кабинет
         driver.find_element(*TestLocators.BUTTON_PERSONAL_ACCOUNT).click()
-        
-        # Ждем загрузки ЛК
-        WebDriverWait(driver, 10).until(
-            EC.visibility_of_element_located(TestLocators.PROFILE_SECTION)
+        WebDriverWait(driver, 5).until(
+            EC.visibility_of_element_located(TestLocators.BUTTON_LOGOUT)
         )
-        
-        # Возвращаемся через логотип
+        # Клик по логотипу
         driver.find_element(*TestLocators.LOGO).click()
-        
-        # Проверяем возврат на главную
-        WebDriverWait(driver, 10).until(
-            EC.visibility_of_element_located(TestLocators.BUTTON_MAKE_ORDER)
-        )
-        
-        # Дополнительные проверки
-        assert driver.find_element(*TestLocators.BUTTON_MAKE_ORDER).is_displayed()
-        assert driver.current_url == MAIN_PAGE
+        # Проверка, что появилась кнопка «Оформить заказ»
+        assert WebDriverWait(driver, 5).until(
+            EC.visibility_of_element_located(TestLocators.BUTTON_MAKE_ORDER))

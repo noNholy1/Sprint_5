@@ -42,15 +42,11 @@ def wait_for_successful_login(driver):
     )
 
 
-# Функции работы с конструктором
-def switch_section(driver, section_locator, expected_section):
-    driver.find_element(*section_locator).click()
-    wait_for_section_active(driver, expected_section)
-
-def wait_for_section_active(driver, section_name):
-    WebDriverWait(driver, 5).until(
-        EC.text_to_be_present_in_element(TestLocators.ACTIVE_SECTION, section_name)
-    )
+def click_section_tab(driver, section_locator):
+        element = WebDriverWait(driver, 5).until(
+        EC.presence_of_element_located(section_locator)
+    ) 
+        driver.execute_script("arguments[0].click();", element)
 
 
 # Функции регистрации
